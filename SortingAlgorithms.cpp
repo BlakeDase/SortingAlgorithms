@@ -1,12 +1,15 @@
 #include <vector>
 #include <math.h>
 #include <iostream>
+#include <chrono>
 
-/*Radix sort. Input is a vector of integers —
-and the number of digits of the largest integer.
+/*Radix sort. Input is a vector of integers, —
+the number of digits of the largest integer, —
+and if there are any negatives or not.
 Function should run in O(nk) time —
-n is the number of ints and k is maxDigits*/
-std::vector<int> radixSort(std::vector<int> tbs, int maxDigits) {
+n is the number of ints and k is maxDigits (k+1 if negatives)*/
+std::vector<int> radixSort(std::vector<int> tbs, int maxDigits, bool negatives) {
+    int ten = 1;
     for (int i = 0; i < maxDigits; i++) {
         std::vector<int> pools[10];
 
@@ -14,43 +17,49 @@ std::vector<int> radixSort(std::vector<int> tbs, int maxDigits) {
         simplify integer to current digit —
         then sort integer into pools 0-9 using digit*/
         for(int num : tbs) {
-            int digit = (int)floor(abs(num)/pow(10, i)) % 10;
+            int digit = (int)floor(abs(num)/ten) % 10;
             pools[digit].push_back(num);
-        }    
+        }
 
         tbs.clear();
-        std::vector<int> negatives;
-        std::vector<int> positives;
 
         /*For every pool in pools —
-        and for every integer in the pool —
-        if the integer is negative, push into negatives —
-        else push it into positives */
+        insert that pool into tbs*/
         for (std::vector<int> pool : pools) {
             if (!pool.empty()) {
-
-                for (int num : pool) {
-                    if (num < 0) {
-                        negatives.push_back(num);
-                    } else {
-                        positives.push_back(num);
-                    }
-                }
+                tbs.insert(tbs.end(), pool.begin(), pool.end());
             }
         }
 
-        /*Move negatives into tbs from back to front —
-        and then positives normally into tbs*/
+        ten *= 10;
+    }
+
+    /*If there potentially are negatives —
+    put them in reverse order —
+    then insert the positive values back in*/
+    if (negatives) {
+        std::vector<int> negatives;
+        std::vector<int> positives;
+
+        for (int num : tbs) {
+            if (num < 0) {
+                negatives.push_back(num);
+            } else {
+                positives.push_back(num);
+            }
+        }
+
+        tbs.clear();
+
         if (!negatives.empty()) {
-            tbs.insert(tbs.end(), negatives.rbegin(), negatives.rend());
+            tbs.assign(negatives.rbegin(), negatives.rend());
         }
 
         if (!positives.empty()) {
             tbs.insert(tbs.end(), positives.begin(), positives.end());
         }
-
     }
-
+    
     return tbs;
 }
 

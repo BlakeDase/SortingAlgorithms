@@ -1,6 +1,7 @@
 #include <vector>
 #include <math.h>
 #include <iostream>
+#include <chrono>
 
 /*Radix sort. Input is a vector of integers, —
 the number of digits of the largest integer, —
@@ -133,6 +134,28 @@ std::vector<int> bubbleSort(std::vector<int> tbs) {
                 tbs[i+1] = temp;
                 swapped = true;
             }
+        }
+    }
+
+    return tbs;
+}
+
+/*Insertion sort. Input is a vector of integers.
+Function should run in O(n^2) time —
+n is the number of integers*/
+std::vector<int> insertionSort(std::vector<int> tbs) {
+    /*For every index in the input vector —
+    compare the current index with the previous index —
+    if the current index is smaller —
+    swap the two indices.
+    Repeat until previous index value is smaller.*/
+    for (int i = 0 ; i < tbs.size(); i++) {
+        int j = i;
+        while (j != 0 && tbs[j] < tbs[j-1]) {
+            int temp = tbs[j];
+            tbs[j] = tbs[j-1];
+            tbs[j-1] = temp;
+            j--;
         }
     }
 

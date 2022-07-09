@@ -113,3 +113,28 @@ std::vector<int> selectionSort(std::vector<int> tbs) {
 
     return tbs;
 }
+
+/*Bubble sort. Input is a vector of integers.
+Function should run in O(n^2) time —
+n is the number of integers*/
+std::vector<int> bubbleSort(std::vector<int> tbs) {
+    /*For every index in the input vector —
+    compare the current index with the next index —
+    if the next index is smaller —
+    swap the two indices.
+    Repeat until full loop contains no swaps.*/
+    bool swapped = true;
+    while (swapped) {
+        swapped = false;
+        for (int i = 0; i < tbs.size() - 1; i++) {
+            if (tbs[i] > tbs[i+1]) {
+                int temp = tbs[i];
+                tbs[i] = tbs[i+1];
+                tbs[i+1] = temp;
+                swapped = true;
+            }
+        }
+    }
+
+    return tbs;
+}

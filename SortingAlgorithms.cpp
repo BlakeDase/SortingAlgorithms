@@ -1,13 +1,12 @@
 #include <vector>
 #include <math.h>
 #include <iostream>
-#include <chrono>
 
 /*Radix sort. Input is a vector of integers, —
 the number of digits of the largest integer, —
 and if there are any negatives or not.
 Function should run in O(nk) time —
-n is the number of ints and k is maxDigits (k+1 if negatives)*/
+n is the number of ints and k is maxDigits*/
 std::vector<int> radixSort(std::vector<int> tbs, int maxDigits, bool negatives) {
     int ten = 1;
     for (int i = 0; i < maxDigits; i++) {
@@ -86,6 +85,30 @@ std::vector<int> countingSort(std::vector<int> tbs, int min, int max) {
             count[i]--;
             j++;
         }
+    }
+
+    return tbs;
+}
+
+/*Selection sort. Input is a vector of integers.
+Function should run in O(n^2) time —
+n is the number of integers*/
+std::vector<int> selectionSort(std::vector<int> tbs) {
+    /*For every index in the input vector —
+    find the smallest integer in the rest of the vector —
+    swap the smallest integer with the current index.*/
+    for (int i = 0; i < tbs.size(); i++) {
+        int smaller_than = tbs[i];
+        int location = i;
+        for (int j = i + 1; j < tbs.size(); j++) {
+            if (tbs[j] < smaller_than) {
+                smaller_than = tbs[j];
+                location = j;
+            }
+        }
+
+        tbs[location] = tbs[i];
+        tbs[i] = smaller_than;
     }
 
     return tbs;

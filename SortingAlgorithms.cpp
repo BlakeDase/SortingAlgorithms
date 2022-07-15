@@ -1,7 +1,6 @@
 #include <vector>
 #include <math.h>
 #include <iostream>
-#include <chrono>
 
 /*Radix sort. Input is a vector of integers, —
 the number of digits of the largest integer, —
@@ -160,4 +159,60 @@ std::vector<int> insertionSort(std::vector<int> tbs) {
     }
 
     return tbs;
+}
+
+/*Merge sort. Input is a vector of integers.
+Function should run in O(n*log(n)) time —
+n is the number of integers*/
+std::vector<int> mergeSort(std::vector<int> tbs) {
+    /*If the input vector is of size 2 or less —
+    return the sorted input vector.*/
+    if (tbs.size() <= 2) {
+        if (tbs.size() == 2) {
+            if (tbs[0] > tbs[1]) {
+                int temp = tbs[0];
+                tbs[0] = tbs[1];
+                tbs[1] = temp;
+            }
+        }
+
+        return tbs;
+    } else {
+        /*Split the input vector into two halves —
+        then sort each half —
+        then merge the two sorted halves.*/
+        int mid = ceil(tbs.size() / 2);
+        std::vector<int> left = std::vector<int>(tbs.begin(), tbs.begin() + mid);
+        left = mergeSort(left);
+
+        std::vector<int> right = std::vector<int>(tbs.begin() + mid, tbs.end());
+        right = mergeSort(right);
+
+        tbs.clear();
+        tbs.resize(left.size() + right.size());
+
+        int i = 0;
+        int j = 0;
+        while (i < left.size() && j < right.size()) {
+            if (left[i] < right[j]) {
+                tbs[i+j] = left[i];
+                i++;
+            } else {
+                tbs[i+j] = right[j];
+                j++;
+            }
+        }
+
+        while (i < left.size()) {
+            tbs[i+j] = left[i];
+            i++;
+        }
+
+        while (j < right.size()) {
+            tbs[i+j] = right[j];
+            j++;
+        }
+
+        return tbs;
+    }
 }
